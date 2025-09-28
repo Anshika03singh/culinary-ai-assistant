@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: culinary_db
+    restart: always
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=culinary_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./backend
+    container_name: culinary_backend
+    restart: always
+    ports:
+      - '5000:5000'
+    environment:
+      - DATABASE_URL=postgres://myuser:mypassword@db:5432/culinary_db
+      - JWT_SECRET=yourSuperSecretKey123!
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: culinary_frontend
+    restart: always
+    ports:
+      - '5173:5173'
+    depends_on:
+      - backend
