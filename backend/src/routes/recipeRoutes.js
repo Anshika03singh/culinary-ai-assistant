@@ -1,17 +1,24 @@
 const express = require('express');
 const authMiddleware = require('../middleware/authMiddleware');
-const upload = require('../middleware/uploadMiddleware'); // Import from the new middleware file
-const { analyzeIngredients } = require('../controllers/recipeController'); // Import ONLY the handler function
+const upload = require('../middleware/uploadMiddleware'); 
+const { analyzeIngredients, generateRecipe } = require('../controllers/recipeController');
 
 const router = express.Router();
 
-// This is now clean, robust, and follows best practices.
-// 1. Check for login. 2. Handle upload. 3. Analyze ingredients.
+// Route for analyzing an image to get ingredients
 router.post(
     '/analyze-image', 
     authMiddleware, 
     upload.single('image'), 
     analyzeIngredients
+);
+
+// --- NEW ROUTE ---
+// Route for generating a recipe from a list of ingredients
+router.post(
+    '/generate-recipe',
+    authMiddleware, // Protect this route as well
+    generateRecipe
 );
 
 module.exports = router;

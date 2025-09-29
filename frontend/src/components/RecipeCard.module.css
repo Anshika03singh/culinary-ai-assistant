@@ -1,0 +1,72 @@
+.card {
+    margin-top: 2rem;
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    text-align: left;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.description {
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+    padding-bottom: 1.5rem;
+}
+
+.meta {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    color: #718096;
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+.ingredients h3, .instructions h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.ingredients ul, .instructions ol {
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+}
+
+.ingredients li, .instructions li {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+/* Make it responsive for smaller screens */
+@media (max-width: 768px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,11 +1,10 @@
 const { analyzeImageWithGemini } = require('../services/visionService');
+const { generateRecipeWithGemini } = require('../services/recipeAIService'); // Import the new service
 
 const analyzeIngredients = async (req, res) => {
     try {
-        // By the time this function runs, our new uploadMiddleware has already
-        // processed the file and checked for its existence.
+        // By the time this function runs, uploadMiddleware has already done its job.
         if (!req.file) {
-            // This is a fallback, though the middleware should handle it.
             return res.status(400).json({ msg: "No image file was uploaded." });
         }
 
@@ -20,7 +19,32 @@ const analyzeIngredients = async (req, res) => {
     }
 };
 
-// We only need to export this one function now
+// --- NEW FUNCTION ---
+// This function will handle the recipe generation requests
+const generateRecipe = async (req, res) => {
+    try {
+        const { ingredients } = req.body; // Get ingredients from the request body
+
+        if (!ingredients || ingredients.length === 0) {
+            return res.status(400).json({ msg: "Ingredient list cannot be empty." });
+        }
+
+        // Call our new AI recipe service
+        const recipe = await generateRecipeWithGemini(ingredients);
+
+        // Send the complete recipe object back to the frontend
+        res.json({ recipe });
+
+    } catch (error) {
+        console.error("Error in generateRecipe controller:", error);
+        res.status(500).json({ msg: "Server error while trying to generate the recipe." });
+    }
+};
+
+
+// We now export the new function as well
 module.exports = {
-    analyzeIngredients
-}
+    analyzeIngredients,
+    generateRecipe 
+};
+
